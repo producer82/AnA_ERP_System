@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Paper from '@material-ui/core/Paper';
-import Club from './components/Club';
+import Customer from './components/Customer';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
@@ -26,17 +26,17 @@ const styles = theme => ({
 
 class App extends React.Component {
   state = {
-    clubs: ""
+    customer: ""
   }
 
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({clubs: res}))
+      .then(res => this.setState({customer: res}))
       .catch(err => console.log(err));
   }
 
   callApi = async () => {
-    const response = await fetch('/api/clubs');
+    const response = await fetch('/api/customer');
     const body = await response.json();
     return body;
   }
@@ -49,14 +49,15 @@ class App extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>번호</TableCell>
-              <TableCell>로고</TableCell>
-              <TableCell>동아리 명</TableCell>
-              <TableCell>소속 학과</TableCell>
-              <TableCell>인원 수</TableCell>
+              <TableCell>사진</TableCell>
+              <TableCell>이름</TableCell>
+              <TableCell>생년월일</TableCell>
+			  <TableCell>성별</TableCell>
+              <TableCell>직업</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.clubs ? this.state.clubs.map(c => { return( <Club key={c.id} id={c.id}logo={c.logo} name={c.name} department={c.department} nop={c.nop}/>) 
+            {this.state.customer ? this.state.customer.map(c => { return( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}/>) 
             }) : 
             <TableRow>
               <TableCell colSpan="6" align="center">

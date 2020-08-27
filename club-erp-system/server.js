@@ -1,31 +1,28 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 5000;
+const fs = require("fs");
+const express = require("express")
+const app = express()
+const port = process.env.PORT || 5000
+const mysql = require("mysql")
+const data = fs.readFileSync('./database.json')
 
-app.get('/api/clubs', (req, res) => {
-    res.send([
-        {
-            'id' : 1,
-            'logo' : 'https://placeimg.com/64/64/any',
-            'name' : 'AnA',
-            'department' : 'software',
-            'nop' : 16
-        },
-        {
-            'id' : 2,
-            'logo' : 'https://placeimg.com/64/64/any',
-            'name' : 'Apple:Pie',
-            'department' : 'software',
-            'nop' : 22
-        },
-        {
-            'id' : 3,
-            'logo' : 'https://placeimg.com/64/64/any',
-            'name' : 'EDCAN',
-            'department' : 'software',
-            'nop' : 13
-        }
-    ])
+const conf = JSON.parse(data);
+
+const connection = mysql.createConnection({
+	host: conf.host,
+	user: conf.user,
+	password: conf.password,
+	port: conf.port,
+	database: conf.database
+})
+
+app.get('/api/customer', (req, res) => {
+    connection.query(
+		"SELECT * FROM CUSTOMER",
+		(err, rows, fields) => {
+			if (err) throw err;
+			res.send(rows);
+		}
+	);
 })
 
 app.listen(port, (err) => {
